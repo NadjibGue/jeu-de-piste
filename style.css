@@ -1,0 +1,248 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Playfair Display', serif;
+  background: linear-gradient(to bottom right, #fff0f5, #ffffff);
+  color: #4a2c2a;
+  overflow-x: hidden;
+}
+
+.intro {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  background: black;
+}
+
+#introVideo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.7;
+}
+
+.intro-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  background: rgba(255, 255, 255, 0.8);
+  padding: 30px;
+  border-radius: 20px;
+  max-width: 80%;
+}
+
+.intro-content h1 {
+  font-size: 2.5rem;
+  margin-bottom: 15px;
+}
+
+.intro-content p {
+  font-size: 1.2rem;
+}
+
+.intro-content button {
+  margin-top: 20px;
+  padding: 12px 25px;
+  font-size: 18px;
+  background: linear-gradient(to right, #ff7cae, #ffa1cb);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.intro-content button:hover {
+  background: linear-gradient(to right, #ff5c99, #ff92b9);
+}
+
+.container {
+  max-width: 700px;
+  margin: 60px auto;
+  padding: 40px;
+  background: #fff6f9;
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  animation: fadeIn 1s ease;
+  text-align: center;
+}
+
+input[type="text"] {
+  padding: 12px;
+  width: 80%;
+  font-size: 16px;
+  border: 1px solid #ffb6c1;
+  border-radius: 8px;
+  margin-top: 20px;
+}
+
+button {
+  padding: 12px 20px;
+  background: linear-gradient(to right, #ff8aaf, #ffb1c9);
+  color: white;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+button:hover {
+  background: linear-gradient(to right, #ff709b, #ffa3be);
+}
+
+.message {
+  margin-top: 15px;
+  font-size: 1.1em;
+}
+
+.hint-link {
+  display: inline-block;
+  margin-top: 10px;
+  font-size: 0.95em;
+  color: #d94f78;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.hint-box {
+  background-color: #ffe0eb;
+  padding: 12px;
+  border-radius: 10px;
+  margin-top: 10px;
+  font-size: 0.95em;
+  animation: fadeIn 0.5s ease;
+}
+
+.error {
+  background-color: #ffdada;
+  color: #a60000;
+}
+
+.success {
+  color: #4CAF50;
+  font-weight: bold;
+  font-size: 1.5rem;
+  margin-top: 40px;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in {
+  animation: fadeIn 0.6s ease-in-out;
+}
+
+.fade-out {
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+/* Loader romantique */
+.loader {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(135deg, #ffe6f0, #fff0f5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.loader-inner {
+  text-align: center;
+  animation: pulse 2s infinite;
+}
+
+.loader-text {
+  font-size: 2em;
+  font-family: 'Playfair Display', serif;
+  color: #c30060;
+  text-shadow: 1px 1px 2px #ffb6c1;
+  line-height: 1.5;
+}
+
+.heart {
+  font-size: 2.5em;
+  animation: heartbeat 1.5s infinite;
+}
+
+.fade-out {
+  animation: fadeOut 1s ease forwards;
+}
+
+@keyframes heartbeat {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.3); }
+}
+
+@keyframes pulse {
+  0% { opacity: 0.8; }
+  50% { opacity: 1; }
+  100% { opacity: 0.8; }
+}
+
+@keyframes fadeOut {
+  to { opacity: 0; visibility: hidden; }
+}
+.loader {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(135deg, #ffe6f0, #fff0f5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.loader-inner {
+  text-align: center;
+  animation: pulse 2s infinite;
+}
+
+.loader-text {
+  font-size: 2em;
+  font-family: 'Playfair Display', serif;
+  color: #c30060;
+  text-shadow: 1px 1px 2px #ffb6c1;
+  line-height: 1.5;
+}
+
+.heart {
+  font-size: 2.5em;
+  animation: heartbeat 1.5s infinite;
+}
+
+.fade-out {
+  animation: fadeOut 1s ease forwards;
+}
+
+@keyframes heartbeat {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.3); }
+}
+
+@keyframes pulse {
+  0% { opacity: 0.8; }
+  50% { opacity: 1; }
+  100% { opacity: 0.8; }
+}
+
+@keyframes fadeOut {
+  to { opacity: 0; visibility: hidden; }
+}
+.fade-in-message {
+  animation: fadeIn 1s ease-in-out;
+  margin-top: 20px;
+  font-size: 1.1em;
+  color: #c30060;
+  text-shadow: 1px 1px 2px #ffd1dc;
+}

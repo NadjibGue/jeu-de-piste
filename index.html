@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Un voyage jusqu’à moi</title>
+
+  <!-- STYLE & APP -->
+  <link rel="stylesheet" href="style.css" />
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#ffa5c0" />
+
+  <!-- ICONES & PWA -->
+  <link rel="apple-touch-icon" href="icon-192.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
+  <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png" />
+  <link rel="shortcut icon" href="icon-192.png" />
+
+  <!-- PWA Apple config -->
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="Un voyage jusqu’à moi" />
+
+  <!-- Service Worker -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js')
+        .then(() => console.log('✅ Service Worker actif'))
+        .catch(err => console.log('❌ Service Worker erreur :', err));
+    }
+  </script>
+</head>
+
+<body>
+  <!-- Écran de préchargement romantique -->
+  <div id="loader" class="loader">
+    <div class="loader-inner">
+      <p class="loader-text">
+        <span class="heart">💗</span> Ishtar…<br>Inshallah t’es prête 💋
+      </p>
+    </div>
+  </div>
+
+  <main>
+    <section class="intro" id="intro" role="region" aria-label="Introduction" style="display: none;">
+      <video autoplay muted playsinline id="introVideo">
+        <source src="intro.mp4" type="video/mp4" />
+        Ton navigateur ne supporte pas la vidéo.
+      </video>
+      <div class="intro-content">
+        <h1>Bienvenue à toi 💖</h1>
+        <p>
+          Tu vas vivre une aventure unique, douce et un peu magique ✨<br>
+          avant de cliquer sur <strong>Commencer</strong>.<br>
+          , <a href="regles.html" class="regles-link">lis d’abord les règles et le but du jeu</a>.
+        </p>
+        <button onclick="startGame()" aria-label="Commencer le jeu">Commencer</button>
+        <p id="startMessage" class="fade-in-message" style="display: none;">
+          🥰 Ahaa bébé... Là y’a plus de marche arrière 😈<br>
+          Mais je sais que tu vas réussir. Je crois en toi mon cœur ❤️
+        </p>
+        
+      </div>
+      
+    </section>
+
+    <section id="step-container" class="container" style="display: none;" role="region" aria-live="polite"></section>
+  </main>
+
+  <script src="script.js"></script>
+<script>
+  // Affiche le loader pendant 3 secondes, puis le fait disparaître
+  window.addEventListener('load', () => {
+    const loader = document.getElementById('loader');
+    
+    // Attendre 3 secondes avant de commencer la disparition
+    setTimeout(() => {
+      loader.classList.add('fade-out'); // animation CSS
+      setTimeout(() => {
+        loader.style.display = 'none'; // cache l'élément après animation
+        document.getElementById('intro').style.display = 'block'; // montre l’intro
+      }, 1000); // durée de l'animation fade-out
+    }, 3000);
+  });
+</script>
+
+</body>
+</html>
