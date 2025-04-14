@@ -135,7 +135,7 @@ function checkCode() {
   const messageEl = document.getElementById("message");
 
   if (!step.code || input === expected) {
-    fetch("https://script.google.com/macros/s/AKfycbypBSxbZG3eJNc5OMVH8KaToegw4088a5ieoM_eubXSVUJsKZrJQhDg7NivibWGuCAYPQ/exec", {
+    fetch("https://script.google.com/macros/s/AKfycbwGtB0aq7myxN8f0LaBwpWJCV2Ti80XJUWMXyqwupP9vVJ7gIrBpltsKhmwj67iFLNcDA/exec", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
