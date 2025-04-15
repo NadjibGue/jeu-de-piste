@@ -3,10 +3,10 @@ const steps = [
     text: `<h3>Étape 1 : Test de réactivité</h3>
            <p class="timing">À réaliser vendredi - Objectif : 10h30</p>
            <div class="enigme">
-             <p><strong>Énigme :</strong> C'est un lieu : tout est rose, girly, on passe souvent devant. Loin de moi, près de toi.</p>
+             <p><strong>Énigme :</strong> Un endroit très girly, souvent croisé mais jamais exploré… le rose te guidera 💅</p>
              <p><strong>Action :</strong> Une fois là-bas, dis : « Bonjour, j'aime la vanille ». Et laisse la magie opérer... À la fin, tu recevras un code. 💅</p>
            </div>`,
-    hint: "Un endroit très girly, souvent croisé mais jamais exploré… le rose te guidera 💅",
+    hint: "C'est un lieu : tout est rose, girly, on passe souvent devant. Loin de moi, près de toi.",
     code: "ONGLES01"
   },
   {
