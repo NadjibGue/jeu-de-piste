@@ -153,15 +153,18 @@ function handleDialogueResponse() {
     });
     localStorage.setItem('gameResponses', JSON.stringify(userResponses));
 
-    // Envoyer la réponse au Google Sheet
-    fetch("https://script.google.com/macros/s/AKfycbzVlJ5KI-ybMjMoahwmwu_EmGGQIq_E63h8C_WjXnZ7pKFvMMOpLEfOuSLbYi_K6UoNLg/exec", {
+    // Envoyer la réponse au Google Sheet avec fetch
+    const formData = new FormData();
+    formData.append('type', 'dialogue');
+    formData.append('timestamp', new Date().toISOString());
+    formData.append('question', dialogue.question);
+    formData.append('response', response);
+
+    fetch("https://script.google.com/macros/s/AKfycbxLoxInxXJGcRR5fXRyz3L_RMHxqBzSEGdBtwQqrNbNI1dT1B2Ud5g6ciILdRsob6W2/exec", {
         method: "POST",
-        body: JSON.stringify({
-            timestamp: new Date().toISOString(),
-            question: dialogue.question,
-            response: response
-        })
-    });
+        mode: 'no-cors',
+        body: formData
+    }).catch(error => console.log('Erreur envoi dialogue:', error));
 
     // Afficher la réaction
     container.innerHTML += `
@@ -292,17 +295,20 @@ function checkCode() {
   const messageEl = document.getElementById("message");
 
   if (!step.code || input === expected) {
-    fetch("https://script.google.com/macros/s/AKfycbwGtB0aq7myxN8f0LaBwpWJCV2Ti80XJUWMXyqwupP9vVJ7gIrBpltsKhmwj67iFLNcDA/exec", {
+    // Envoyer le code au Google Sheet
+    const formData = new FormData();
+    formData.append('type', 'step');
+    formData.append('timestamp', new Date().toISOString());
+    formData.append('stepNumber', currentStep + 1);
+    formData.append('code', input);
+    formData.append('secret', 'ishtar-code-secret');
+
+    fetch("VOTRE_URL_GOOGLE_SCRIPT", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        secret: "ishtar-code-secret",
-        step: currentStep + 1,
-        code: step.code || "final",
-        timestamp: new Date().toISOString()
-      })
-    });
-    
+      mode: 'no-cors',
+      body: formData
+    }).catch(error => console.log('Erreur envoi code:', error));
+
     currentStep++;
     if (currentStep < steps.length) {
       container.classList.add('fade-out');
