@@ -7,6 +7,7 @@
 
   <!-- STYLE & APP -->
   <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="styles.css" />
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#ffa5c0" />
 
@@ -32,6 +33,17 @@
 </head>
 
 <body>
+  <!-- Popup de code d'accès -->
+  <div id="accessCodeOverlay" class="overlay">
+    <div class="popup">
+      <h2>Code d'accès requis</h2>
+      <p>Votre code de jeu sera donné jeudi à 17h rest à l'affus <br> <p style="color: brown;"><b>MONTE LE SON DE TON TEL ET AUTORISE LES NOTIFICATION MON COEUR</b></p></p>
+      <input type="password" id="accessCodeInput" placeholder="Entrez le code d'accès">
+      <button onclick="checkAccessCode()">Valider</button>
+      <p id="accessError" class="error-message"></p>
+    </div>
+  </div>
+
   <!-- Écran de préchargement romantique -->
   <div id="loader" class="loader">
     <div class="loader-inner">
@@ -41,28 +53,32 @@
     </div>
   </div>
 
-  <main>
+  <main id="mainContent" style="display: none;">
     <section class="intro" id="intro" role="region" aria-label="Introduction" style="display: none;">
       <video autoplay muted playsinline id="introVideo">
         <source src="intro.mp4" type="video/mp4" />
         Ton navigateur ne supporte pas la vidéo.
       </video>
       <div class="intro-content">
-        <h1>Bienvenue à toi 💖</h1>
+        <h1>Heello Mon amouur 💖</h1>
         <p>
+          Bravo t'as pu trouver le code haha bien vu, du coup tu es sur le bon site !<br>
+          Je suis trop content de te retrouver ici !<br>
           Tu vas vivre une aventure unique, douce et un peu magique ✨<br>
-          avant de cliquer sur <strong>Commencer</strong>.<br>
+          avant de cliquer sur <strong>Goo Je suis chaud</strong>.<br>
           , <a href="regles.html" class="regles-link">lis d’abord les règles et le but du jeu</a>.
         </p>
-        <button onclick="startGame()" aria-label="Commencer le jeu">Commencer</button>
+        <button onclick="startGame()" aria-label="Commencer le jeu">Goo Je suis chaud</button>
         <p id="startMessage" class="fade-in-message" style="display: none;">
-          🥰 Ahaa bébé... Là y’a plus de marche arrière 😈<br>
-          Mais je sais que tu vas réussir. Je crois en toi mon cœur ❤️
+          🥰 Ahaa Pinguin... Là y’a plus de marche arrière 😈<br>
+          Mais je sais que tu vas réussir. Je crois en toi dindon ❤️
         </p>
         
       </div>
       
     </section>
+
+    <div id="dialogue-container"></div>
 
     <section id="step-container" class="container" style="display: none;" role="region" aria-live="polite"></section>
   </main>

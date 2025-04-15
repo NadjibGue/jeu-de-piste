@@ -1,9 +1,13 @@
 const steps = [
   {
-    text: "Bienvenue dans ton aventure magique 🌟. Aujourd’hui, tout commence ici. Tu connais ce lieu : tout est rose, girly, tu passes souvent devant sans y prêter attention. Cette fois, fais le premier pas. Une fois là-bas, dis : « Bonjour, j’aime la vanille ». Et laisse la magie opérer... À la fin, tu recevras un code. 💅",
+    text: `<h3>Étape 1 : Test de réactivité</h3>
+           <p class="timing">À réaliser vendredi - Objectif : 10h30</p>
+           <div class="enigme">
+             <p><strong>Énigme :</strong> C'est un lieu : tout est rose, girly, on passe souvent devant. Loin de moi, près de toi.</p>
+             <p><strong>Action :</strong> Une fois là-bas, dis : « Bonjour, j'aime la vanille ». Et laisse la magie opérer... À la fin, tu recevras un code. 💅</p>
+           </div>`,
     hint: "Un endroit très girly, souvent croisé mais jamais exploré… le rose te guidera 💅",
     code: "ONGLES01"
-    
   },
   {
     text: "Tu es éclatante ✨ Il est temps de souffler. Rends-toi dans le café où notre histoire s’est ancrée. Tu y trouveras un sac avec un code. Garde-le fermé. Saisis ici le mot qu’on t’a remis.",
@@ -48,19 +52,172 @@ const steps = [
   }
 ];
 
+const dialogues = [
+  {
+    question: "Attend attend pas aussi vite tu me disais que tu sais et tu as des doute...? Alors Pinguin, as-tu une idée de ce qui t'attend ? 😊",
+    responseField: true,
+    reaction: (response) => `Hmm... "${response}" ? C'est mignon ce que tu penses ! Mais crois-moi, c'est encore mieux que ça 😘`
+  },
+  {
+    question: "Sur une échelle de 1 à 10, à quel point es-tu excitée de commencer cette aventure ? 💫",
+    responseField: true,
+    reaction: (response) => `Waouh ! ${response}/10 ? J'espère que tu garderas cette énergie jusqu'au bout 🥰`
+  },
+  {
+    question: "Et si je te dis que cette journée pourrait changer ta vie... Tu en penses quoi ? 💝",
+    responseField: true,
+    reaction: (response) => `${response}... J'adore ta réponse ! Garde bien ce message quelque part, on en reparlera à la fin 😉`
+  },
+  {
+    question: "Tu as l'air impatiente... 😏",
+    responseField: true,
+    reaction: (response) => `Si tu as vraiment hâte de savoir, concentre-toi bien sur chaque énigme... Trouve tous les codes et tu découvriras quelque chose de magique 💫 Tu es prête ? C'est parti ! 🎯`
+  }
+];
+
 let currentStep = 0;
+let currentDialogue = 0;
+
+let userResponses = {
+    timestamp: new Date().toISOString(),
+    answers: []
+};
 
 function startGame() {
-  document.getElementById("intro").style.display = "none";
-  document.getElementById("step-container").style.display = "block";
-  document.getElementById("startMessage").style.display = "block";
-  renderStep();
-  createPetalEffect();
-  createFloatingHearts();
-  askNotificationPermission();
-
+    // Charger les réponses précédentes si elles existent
+    const savedResponses = localStorage.getItem('gameResponses');
+    if (savedResponses) {
+        userResponses = JSON.parse(savedResponses);
+    }
+    
+    // Masquer l'intro complètement
+    document.getElementById("intro").style.display = "none";
+    
+    if (currentDialogue < dialogues.length) {
+        // Afficher le conteneur de dialogue
+        const dialogueContainer = document.getElementById("dialogue-container") || createDialogueContainer();
+        dialogueContainer.style.display = "block";
+        showDialogue();
+    } else {
+        // Si tous les dialogues sont terminés, afficher le jeu
+        document.getElementById("dialogue-container").style.display = "none";
+        document.getElementById("step-container").style.display = "block";
+        document.getElementById("startMessage").style.display = "block";
+        renderStep();
+        createPetalEffect();
+        createFloatingHearts();
+        askNotificationPermission();
+    }
 }
 
+function showDialogue() {
+    const dialogue = dialogues[currentDialogue];
+    const container = document.getElementById("dialogue-container") || createDialogueContainer();
+    container.style.display = "block"; // S'assurer que le conteneur est visible
+    
+    container.innerHTML = `
+        <div class="dialogue-box fade-in">
+            <p class="dialogue-text">${dialogue.question}</p>
+            ${dialogue.responseField ? 
+                `<input type="text" class="dialogue-input" placeholder="Ta réponse..." />` : 
+                ''}
+            <button onclick="handleDialogueResponse()" class="dialogue-button">Répondre</button>
+        </div>
+    `;
+}
+
+function createDialogueContainer() {
+    const container = document.createElement('div');
+    container.id = 'dialogue-container';
+    document.querySelector('main').appendChild(container);
+    return container;
+}
+
+// Remplacer la fonction handleDialogueResponse existante
+function handleDialogueResponse() {
+    const input = document.querySelector('.dialogue-input');
+    const response = input ? input.value : '';
+    
+    if (response.trim() === '') {
+        return;
+    }
+
+    const dialogue = dialogues[currentDialogue];
+    const container = document.getElementById("dialogue-container");
+    
+    // Sauvegarder la réponse
+    userResponses.answers.push({
+        question: dialogue.question,
+        response: response,
+        timestamp: new Date().toISOString()
+    });
+    localStorage.setItem('gameResponses', JSON.stringify(userResponses));
+
+    // Envoyer la réponse au Google Sheet
+    fetch("https://script.google.com/macros/s/AKfycbzVlJ5KI-ybMjMoahwmwu_EmGGQIq_E63h8C_WjXnZ7pKFvMMOpLEfOuSLbYi_K6UoNLg/exec", {
+        method: "POST",
+        body: JSON.stringify({
+            timestamp: new Date().toISOString(),
+            question: dialogue.question,
+            response: response
+        })
+    });
+
+    // Afficher la réaction
+    container.innerHTML += `
+        <div class="dialogue-reaction fade-in">
+            ${dialogue.reaction(response)}
+        </div>
+    `;
+
+    setTimeout(() => {
+        currentDialogue++;
+        if (currentDialogue >= dialogues.length) {
+            showDialogueSummary();
+        } else {
+            startGame();
+        }
+    }, 3000);
+}
+
+function showDialogueSummary() {
+    const container = document.getElementById("dialogue-container");
+    let summaryHTML = `
+        <div class="summary-box fade-in">
+            <h3>💝 Merci pour tes réponses mon amour!</h3>
+            <p>J'ai bien reçu tes messages sur mon téléphone à l'instant. 
+               Fais une capture d'écran de ce récapitulatif, tu en auras peut-être besoin plus tard... 📸</p>
+            <div class="responses-list">
+    `;
+    
+    userResponses.answers.forEach((item, index) => {
+        summaryHTML += `
+            <div class="response-item">
+                <p class="question">Q${index + 1}: ${item.question}</p>
+                <p class="answer">Ta réponse: ${item.response}</p>
+            </div>
+        `;
+    });
+
+    summaryHTML += `
+            </div>
+            <p class="next-step-hint">🎯 Maintenant, lance-toi dans l'étape 1! Je ne peux plus te contacter, mais je sais que tu vas y arriver! 💪</p>
+            <button onclick="startGameAfterSummary()" class="start-adventure-btn">Commencer l'aventure</button>
+        </div>
+    `;
+
+    container.innerHTML = summaryHTML;
+}
+
+function startGameAfterSummary() {
+    document.getElementById("dialogue-container").style.display = "none";
+    document.getElementById("step-container").style.display = "block";
+    document.getElementById("startMessage").style.display = "block";
+    renderStep();
+    createPetalEffect();
+    createFloatingHearts();
+    askNotificationPermission();
+}
 
 let notificationsEnabled = false;
 function askNotificationPermission() {
@@ -248,4 +405,88 @@ function confettiRain() {
   }
 }
 
-window.onload = () => {};
+// Code d'accès (à changer selon vos besoins)
+const CORRECT_ACCESS_CODE = "CODE2024";
+
+// Modifie la fonction checkAccessCode pour sauvegarder dans localStorage
+function checkAccessCode() {
+    const input = document.getElementById('accessCodeInput');
+    const error = document.getElementById('accessError');
+    const overlay = document.getElementById('accessCodeOverlay');
+    const mainContent = document.getElementById('mainContent');
+
+    if (input.value === CORRECT_ACCESS_CODE) {
+        overlay.style.display = 'none';
+        mainContent.style.display = 'block';
+        // Sauvegarde permanente du code d'accès
+        localStorage.setItem('gameAccessGranted', 'true');
+    } else {
+        error.textContent = 'Code incorrect';
+        input.value = '';
+    }
+}
+
+// Remplace la fonction window.onload existante
+window.addEventListener('load', function() {
+    // Vérifie si le code a déjà été entré précédemment
+    const accessGranted = localStorage.getItem('gameAccessGranted');
+    
+    if (accessGranted === 'true') {
+        // Si le code a déjà été validé, cache directement la popup
+        document.getElementById('accessCodeOverlay').style.display = 'none';
+        document.getElementById('mainContent').style.display = 'block';
+        document.getElementById('intro').style.display = 'block';
+    } else {
+        // Sinon, affiche la popup de code d'accès
+        document.getElementById('accessCodeOverlay').style.display = 'flex';
+        document.getElementById('mainContent').style.display = 'none';
+    }
+
+    // Gestion du loader
+    const loader = document.getElementById('loader');
+    setTimeout(() => {
+        loader.classList.add('fade-out');
+        setTimeout(() => {
+            loader.style.display = 'none';
+            if (accessGranted === 'true') {
+                document.getElementById('intro').style.display = 'block';
+            }
+        }, 1000);
+    }, 3000);
+});
+
+// Ajouter une fonction pour voir les réponses (utile pour le débogage)
+function viewResponses() {
+    const responses = localStorage.getItem('gameResponses');
+    if (responses) {
+        console.log('Réponses sauvegardées:', JSON.parse(responses));
+        return JSON.parse(responses);
+    }
+    return null;
+}
+
+// Ajoutez ces styles CSS en haut du fichier pour le nouveau format
+const styleEl = document.createElement('style');
+styleEl.textContent = `
+  .step-text h3 {
+    color: #ff4081;
+    margin-bottom: 10px;
+    font-size: 1.5em;
+  }
+  .step-text .timing {
+    color: #666;
+    font-style: italic;
+    margin-bottom: 15px;
+    padding: 5px 10px;
+    background: #fff3f7;
+    border-radius: 5px;
+    display: inline-block;
+  }
+  .step-text .enigme {
+    margin-top: 15px;
+  }
+  .step-text .enigme strong {
+    color: #ff4081;
+  }
+`;
+document.head.appendChild(styleEl);
