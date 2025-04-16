@@ -2,7 +2,8 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <meta name="description" content="Un jeu de piste romantique personnalisé"/>
   <title>Un voyage jusqu’à moi</title>
 
   <!-- STYLE -->
@@ -10,7 +11,8 @@
 
   <!-- PWA & THEME -->
   <link rel="manifest" href="manifest.json" />
-  <meta name="theme-color" content="#ffa5c0" />
+  <meta name="theme-color" content="#ffa5c0" media="(prefers-color-scheme: light)"/>
+  <meta name="theme-color" content="#ff80ab" media="(prefers-color-scheme: dark)"/>
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
@@ -18,16 +20,24 @@
 
   <!-- ICONES -->
   <link rel="apple-touch-icon" href="icon-192.png" />
+  <link rel="apple-touch-startup-image" href="icon-512.png"/>
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
   <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png" />
   <link rel="shortcut icon" href="icon-192.png" />
 
   <!-- SERVICE WORKER -->
   <script>
+    // Enregistrement amélioré du Service Worker
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('service-worker.js')
-        .then(() => console.log('✅ Service Worker actif'))
-        .catch(err => console.log('❌ Service Worker erreur :', err));
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./service-worker.js')
+          .then(registration => {
+            console.log('✅ Service Worker enregistré :', registration.scope);
+          })
+          .catch(error => {
+            console.error('❌ Erreur Service Worker :', error);
+          });
+      });
     }
   </script>
 </head>
