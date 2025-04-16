@@ -1,7 +1,8 @@
 {
-  "name": "Vanille",
-  "short_name": "Mon Aventure",
-  "start_url": "./index.html",
+  "name": "Un voyage jusqu'à moi",
+  "short_name": "Voyage",
+  "description": "Un jeu de piste romantique",
+  "start_url": "/",
   "display": "standalone",
   "background_color": "#fff0f5",
   "theme_color": "#ffa5c0",
