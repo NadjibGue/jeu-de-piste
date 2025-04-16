@@ -1,12 +1,13 @@
 const CACHE_NAME = 'jeu-de-piste-v1';
+const BASE_PATH = '/jeu-de-piste';  // Add base path for GitHub Pages
 const ASSETS = [
-  '/',
-  '/index.html',
-  '/style.css',
-  '/script.js',
-  '/manifest.json',
-  '/icon-192.png',
-  '/icon-512.png'
+  `${BASE_PATH}/`,
+  `${BASE_PATH}/index.html`,
+  `${BASE_PATH}/style.css`,
+  `${BASE_PATH}/script.js`,
+  `${BASE_PATH}/manifest.json`,
+  `${BASE_PATH}/icon-192.png`,
+  `${BASE_PATH}/icon-512.png`
 ];
 
 // Installation du Service Worker
@@ -15,46 +16,50 @@ self.addEventListener('install', event => {
     caches.open(CACHE_NAME)
       .then(cache => {
         console.log('✅ Cache ouvert');
-        return cache.addAll(ASSETS).catch(error => {
-          console.log('❌ Échec cache :', error);
-        });
+        return cache.addAll(ASSETS);
+      })
+      .catch(error => {
+        console.error('❌ Échec cache :', error);
       })
   );
 });
 
 // Interception des requêtes
 self.addEventListener('fetch', event => {
+  // Skip caching for external URLs
+  if (!event.request.url.includes(self.location.origin) && 
+      !event.request.url.includes('github.io')) {
+    return;
+  }
+
   event.respondWith(
     caches.match(event.request)
       .then(response => {
         if (response) {
           return response;
         }
-        
-        // Clone la requête car elle ne peut être utilisée qu'une fois
-        const fetchRequest = event.request.clone();
 
-        return fetch(fetchRequest)
+        return fetch(event.request.clone())
           .then(response => {
-            // Vérifie que la réponse est valide
-            if (!response || response.status !== 200 || response.type !== 'basic') {
+            if (!response || response.status !== 200) {
               return response;
             }
 
-            // Clone la réponse car elle ne peut être utilisée qu'une fois
-            const responseToCache = response.clone();
-
-            caches.open(CACHE_NAME)
-              .then(cache => {
-                cache.put(event.request, responseToCache);
-              });
+            if (ASSETS.includes(new URL(event.request.url).pathname)) {
+              caches.open(CACHE_NAME)
+                .then(cache => {
+                  cache.put(event.request, response.clone());
+                });
+            }
 
             return response;
           })
           .catch(error => {
-            console.log('❌ Erreur fetch:', error);
-            // Retourne une réponse d'erreur personnalisée
-            return new Response('Erreur réseau, vérifiez votre connexion');
+            console.error('❌ Erreur fetch:', error);
+            return new Response(
+              JSON.stringify({ error: 'Erreur réseau' }), 
+              { headers: { 'Content-Type': 'application/json' } }
+            );
           });
       })
   );
