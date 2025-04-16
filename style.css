@@ -868,6 +868,22 @@ button:hover {
   font-size: 22px;
 }
 
+/* Styles de base de la carte */
+.progress-map {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 300px;
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 0 5px 30px rgba(255, 105, 180, 0.2);
+  z-index: 1000;
+  transform: translateX(120%);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
 /* Styles Mobile */
 @media screen and (max-width: 768px) {
   .container {
@@ -960,6 +976,70 @@ button:hover {
   .hint-box {
     margin: 10px 0;
     padding: 12px;
+  }
+
+  .progress-map {
+    width: 100%;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    border-radius: 20px 20px 0 0;
+    padding: 15px;
+    transform: translateY(95%);
+    max-height: 80vh;
+    overflow-y: auto;
+  }
+
+  .progress-map.visible {
+    transform: translateY(0);
+  }
+
+  .map-toggle {
+    position: absolute;
+    top: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 20px 20px 0 0;
+    width: 60px;
+    height: 40px;
+  }
+
+  .steps-container {
+    padding-bottom: env(safe-area-inset-bottom);
+    /* Support pour iPhone X+ */
+  }
+
+  .map-step {
+    padding: 12px;
+    margin: 6px 0;
+  }
+
+  /* Optimisation pour écrans très petits */
+  @media screen and (max-height: 500px) {
+    .progress-map {
+      max-height: 60vh;
+    }
+  }
+}
+
+/* Animation de transition */
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+  }
+
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(0);
+  }
+
+  to {
+    transform: translateY(100%);
   }
 }
 
