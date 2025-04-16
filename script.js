@@ -575,24 +575,56 @@ function viewResponses() {
     return null;
 };
 
+const stepIcons = ['💅', '☕', '💋', '🏠', '💝', '🚗', '🏨', '❤️'];
+const stepNames = [
+  'Beauté Rose',
+  'Pause Café',
+  'Frisson Secret',
+  'Nid Douillet',
+  'Mots Doux',
+  'En Route',
+  'Destination',
+  'Face à Face'
+];
+
 function updateProgressMap() {
   const container = document.querySelector('.steps-container');
-  container.innerHTML = '';
+  const progress = Math.round((currentStep / (steps.length - 1)) * 100);
   
+  container.innerHTML = `
+    <div class="progress-bar">
+      <div class="progress-bar-fill" style="width: ${progress}%"></div>
+    </div>
+  `;
+
   steps.forEach((step, index) => {
-    if (!step.text.includes('Fin :')) { // Exclure l'étape finale
+    if (!step.text.includes('Fin :')) {
       const stepElement = document.createElement('div');
-      stepElement.className = `map-step ${index < currentStep ? 'completed' : ''} ${index === currentStep ? 'current' : ''}`;
+      const completed = index < currentStep;
+      const isCurrent = index === currentStep;
       
-      const icon = index < currentStep ? '✅' : index === currentStep ? '🚀' : '🔒';
+      stepElement.className = `map-step ${completed ? 'completed' : ''} ${isCurrent ? 'current' : ''}`;
       stepElement.innerHTML = `
-        <span class="step-icon">${icon}</span>
-        <span>Étape ${index + 1}</span>
+        <div class="step-icon">${stepIcons[index]}</div>
+        <div class="step-name">${stepNames[index]}</div>
+        ${completed ? '<div class="step-badge">✨</div>' : ''}
       `;
+      
+      if (completed || isCurrent) {
+        stepElement.style.cursor = 'pointer';
+        stepElement.onclick = () => showStepDetails(index);
+      }
       
       container.appendChild(stepElement);
     }
   });
+}
+
+function showStepDetails(index) {
+  // Animation flash pour montrer la sélection
+  const step = document.querySelectorAll('.map-step')[index];
+  step.style.animation = 'flash 0.5s';
+  setTimeout(() => step.style.animation = '', 500);
 }
 
 function toggleMap() {
