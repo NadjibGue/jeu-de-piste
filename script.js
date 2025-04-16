@@ -374,6 +374,7 @@ function checkCode() {
   const messageEl = document.getElementById("message");
 
   if (!step.code || input === expected) {
+    completeStep();
     // Envoyer le code au Google Sheet
     const formData = new FormData();
     formData.append('type', 'step');
@@ -605,11 +606,13 @@ function updateProgressMap() {
       
       stepElement.className = `map-step ${completed ? 'completed' : ''} ${isCurrent ? 'current' : ''}`;
       stepElement.innerHTML = `
-        <div class="step-icon">${stepIcons[index]}</div>
-        <div class="step-name">${stepNames[index]}</div>
-        ${completed ? '<div class="step-badge">✨</div>' : ''}
+        <div class="step-content">
+          <div class="step-icon">${stepIcons[index]}</div>
+          <div class="step-name">${stepNames[index]}</div>
+          ${completed ? '<div class="step-badge">✨</div>' : ''}
+        </div>
       `;
-      
+
       if (completed || isCurrent) {
         stepElement.style.cursor = 'pointer';
         stepElement.onclick = () => showStepDetails(index);
@@ -618,6 +621,68 @@ function updateProgressMap() {
       container.appendChild(stepElement);
     }
   });
+}
+
+// Ajouter animation quand une étape est complétée
+function completeStep() {
+  const currentStepEl = document.querySelector('.map-step.current');
+  if (currentStepEl) {
+    currentStepEl.classList.add('completed');
+    currentStepEl.style.transition = 'all 0.5s ease';
+    currentStepEl.style.filter = 'blur(0)';
+    currentStepEl.style.opacity = '1';
+  }
+}
+
+// Modifier la fonction checkCode pour inclure l'animation
+function checkCode() {
+  const step = steps[currentStep];
+  const inputEl = document.getElementById("codeInput");
+  const input = inputEl ? inputEl.value.trim().toUpperCase() : null;
+  const expected = step.code ? step.code.toUpperCase() : null;
+  const container = document.getElementById("step-container");
+  const messageEl = document.getElementById("message");
+
+  if (!step.code || input === expected) {
+    completeStep();
+    // Envoyer le code au Google Sheet
+    const formData = new FormData();
+    formData.append('type', 'step');
+    formData.append('timestamp', new Date().toISOString());
+    formData.append('stepNumber', currentStep + 1);
+    formData.append('code', input);
+    formData.append('secret', 'ishtar-code-secret');
+
+    fetch("https://script.google.com/macros/s/AKfycbwGtB0aq7myxN8f0LaBwpWJCV2Ti80XJUWMXyqwupP9vVJ7gIrBpltsKhmwj67iFLNcDA/exec", {
+      method: "POST",
+      mode: 'no-cors',
+      body: formData
+    }).catch(error => console.log('Erreur envoi code:', error));
+
+    currentStep++;
+    updateProgressMap(); // Mettre à jour la carte
+    if (currentStep < steps.length) {
+      container.classList.add('fade-out');
+      setTimeout(() => {
+        renderStep();
+        container.classList.remove('fade-out');
+      }, 500);
+    } else {
+      container.innerHTML = `
+  <div class="final-step fade-in">
+    <h2 class="heartbeat">Tu es là… ❤️</h2>
+    <p class="soft-fade">Ferme les yeux quelques secondes.</p>
+    <p class="soft-fade">Respire profondément.</p>
+    <p class="soft-fade">Laisse ton cœur faire le reste.</p>
+    <button class="big-button zoom-smooth appear-smooth" onclick="triggerFinalMoment()">Je suis prête</button>
+
+
+  </div>
+`;
+    }
+  } else {
+    messageEl.innerHTML = "<div class='hint-box fade-in error'>❌ Code incorrect. Réessaie avec ton cœur.</div>";
+  }
 }
 
 function showStepDetails(index) {
