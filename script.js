@@ -165,6 +165,7 @@ function startGame() {
       createFloatingHearts();
       askNotificationPermission();
     }
+    updateProgressMap(); // Initialiser la carte
   } catch (error) {
     console.error('Erreur dans startGame:', error);
   }
@@ -388,6 +389,7 @@ function checkCode() {
     }).catch(error => console.log('Erreur envoi code:', error));
 
     currentStep++;
+    updateProgressMap(); // Mettre à jour la carte
     if (currentStep < steps.length) {
       container.classList.add('fade-out');
       setTimeout(() => {
@@ -572,3 +574,28 @@ function viewResponses() {
     }
     return null;
 };
+
+function updateProgressMap() {
+  const container = document.querySelector('.steps-container');
+  container.innerHTML = '';
+  
+  steps.forEach((step, index) => {
+    if (!step.text.includes('Fin :')) { // Exclure l'étape finale
+      const stepElement = document.createElement('div');
+      stepElement.className = `map-step ${index < currentStep ? 'completed' : ''} ${index === currentStep ? 'current' : ''}`;
+      
+      const icon = index < currentStep ? '✅' : index === currentStep ? '🚀' : '🔒';
+      stepElement.innerHTML = `
+        <span class="step-icon">${icon}</span>
+        <span>Étape ${index + 1}</span>
+      `;
+      
+      container.appendChild(stepElement);
+    }
+  });
+}
+
+function toggleMap() {
+  const map = document.getElementById('progressMap');
+  map.classList.toggle('visible');
+}
