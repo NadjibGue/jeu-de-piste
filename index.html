@@ -5,24 +5,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Un voyage jusqu’à moi</title>
 
-  <!-- STYLE & APP -->
+  <!-- STYLE -->
   <link rel="stylesheet" href="style.css" />
-  <link rel="stylesheet" href="styles.css" />
+
+  <!-- PWA & THEME -->
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#ffa5c0" />
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="Un voyage jusqu’à moi" />
 
-  <!-- ICONES & PWA -->
+  <!-- ICONES -->
   <link rel="apple-touch-icon" href="icon-192.png" />
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
   <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png" />
   <link rel="shortcut icon" href="icon-192.png" />
 
-  <!-- PWA Apple config -->
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-  <meta name="apple-mobile-web-app-title" content="Un voyage jusqu’à moi" />
-
-  <!-- Service Worker -->
+  <!-- SERVICE WORKER -->
   <script>
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('service-worker.js')
@@ -33,19 +33,22 @@
 </head>
 
 <body>
-  <!-- Popup de code d'accès -->
+  <!-- 🔐 Code d'accès -->
   <div id="accessCodeOverlay" class="overlay">
-    <div class="popup">
-      <h2>Code d'accès requis</h2>
-      <p>Ton code de jeu sera donné jeudi à 17h rest à l'affus <br> <p style="color: brown;"><b>MONTE LE SON DE TON TEL ET AUTORISE LES NOTIFICATION MON COEUR</b></p></p>
-      <input type="password" id="accessCodeInput" placeholder="Entrez le code d'accès">
-      <button onclick="checkAccessCode()">Valider</button>
+    <div class="popup" role="dialog" aria-labelledby="access-title">
+      <h2 id="access-title">Code d'accès requis</h2>
+      <p>Ton code de jeu sera donné jeudi à 17h, reste à l’affût !</p>
+      <p style="color: brown;"><strong>MONTE LE SON DE TON TÉLÉPHONE ET AUTORISE LES NOTIFICATIONS MON CŒUR</strong></p>
+      <form id="accessForm" onsubmit="handleAccessCode(event)">
+        <input type="password" id="accessCodeInput" placeholder="Entrez le code d'accès" autocomplete="off" />
+        <button type="submit">Valider</button>
+      </form>
       <p id="accessError" class="error-message"></p>
     </div>
   </div>
 
-  <!-- Écran de préchargement romantique -->
-  <div id="loader" class="loader">
+  <!-- 🎬 Écran de préchargement romantique -->
+  <div id="loader" class="loader" role="status" aria-label="Chargement">
     <div class="loader-inner">
       <p class="loader-text">
         <span class="heart">💗</span> Ishtar…<br>Inshallah t’es prête 💋
@@ -53,52 +56,63 @@
     </div>
   </div>
 
-  <main id="mainContent" style="display: none;">
-    <section class="intro" id="intro" role="region" aria-label="Introduction" style="display: none;">
-      <video autoplay muted playsinline id="introVideo">
-        <source src="intro.mp4" type="video/mp4" />
-        Ton navigateur ne supporte pas la vidéo.
-      </video>
+  <!-- 🌸 Contenu principal -->
+  <main id="mainContent">
+    <section class="intro" id="intro">
       <div class="intro-content">
         <h1>Heello Mon amouur 💖</h1>
         <p>
-          Bravo t'as pu trouver le code haha bien vu, du coup tu es sur le bon site !<br>
+          Bravo, t'as pu trouver le code haha bien vu !<br>
+          Du coup, tu es sur le bon site !<br>
           Je suis trop content de te retrouver ici !<br>
           Tu vas vivre une aventure unique, douce et un peu magique ✨<br>
-          avant de cliquer sur <strong>Goo Je suis chaud</strong>.<br>
-          , <a href="regles.html" class="regles-link">lis d’abord les règles et le but du jeu</a>.
+          Avant de cliquer sur <strong>Goo Je suis chaud</strong>, <a href="regles.html" class="regles-link">lis d’abord les règles et le but du jeu</a>.
         </p>
         <button onclick="startGame()" aria-label="Commencer le jeu">Goo Je suis chaud</button>
         <p id="startMessage" class="fade-in-message" style="display: none;">
           🥰 Ahaa Pinguin... Là y’a plus de marche arrière 😈<br>
-          Mais je sais que tu vas réussir. Je crois en toi dindon ❤️
+          Mais je sais que tu vas réussir. Je crois en toi, dindon ❤️
         </p>
-        
       </div>
-      
     </section>
 
-    <div id="dialogue-container"></div>
+    <!-- Conteneur de dialogue avec zone dédiée pour les messages -->
+    <div id="dialogue-container" role="region" aria-live="polite">
+      <div id="dialogue-message" class="message"></div>
+    </div>
 
-    <section id="step-container" class="container" style="display: none;" role="region" aria-live="polite"></section>
+    <!-- Conteneur d'étapes avec zone dédiée pour les indices -->
+    <section id="step-container" class="container" role="region" aria-live="polite">
+      <div id="step-content"></div>
+      <div id="hint-container" class="message-container">
+        <div id="message"></div>
+      </div>
+    </section>
   </main>
 
-  <script src="script.js"></script>
-<script>
-  // Affiche le loader pendant 3 secondes, puis le fait disparaître
-  window.addEventListener('load', () => {
-    const loader = document.getElementById('loader');
-    
-    // Attendre 3 secondes avant de commencer la disparition
-    setTimeout(() => {
-      loader.classList.add('fade-out'); // animation CSS
-      setTimeout(() => {
-        loader.style.display = 'none'; // cache l'élément après animation
-        document.getElementById('intro').style.display = 'block'; // montre l’intro
-      }, 1000); // durée de l'animation fade-out
-    }, 3000);
-  });
-</script>
+  <!-- Scripts -->
+  <script>
+    // Handler for access code
+    function handleAccessCode(event) {
+      event.preventDefault();
+      try {
+        checkAccessCode();
+      } catch(e) {
+        console.error('Erreur:', e);
+      }
+    }
 
+    // Handler for hints
+    function handleHint(hint) {
+      event.preventDefault();
+      try {
+        showHint(hint);
+      } catch(e) {
+        console.error('Erreur hint:', e);
+      }
+      return false;
+    }
+  </script>
+  <script src="script.js" defer></script>
 </body>
 </html>
