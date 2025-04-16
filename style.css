@@ -783,3 +783,116 @@ button:hover {
   width: 50px;
   font-size: 22px;
 }
+
+/* Styles Mobile */
+@media screen and (max-width: 768px) {
+  .container {
+    margin: 20px auto;
+    padding: 20px;
+    width: 90%;
+  }
+
+  .intro-content {
+    padding: 20px;
+    width: 90%;
+    max-width: none;
+  }
+
+  .intro-content h1 {
+    font-size: 2rem;
+  }
+
+  .intro-content p {
+    font-size: 1rem;
+  }
+
+  /* Ajuster la carte de progression */
+  .progress-map {
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    max-width: 100%;
+    border-radius: 20px 20px 0 0;
+    transform: translateY(95%);
+  }
+
+  .progress-map.visible {
+    transform: translateY(0);
+  }
+
+  .map-toggle {
+    top: -45px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 12px 12px 0 0;
+    width: 60px;
+  }
+
+  /* Ajuster les dialogues */
+  .dialogue-box {
+    margin: 10px;
+    padding: 15px;
+  }
+
+  .dialogue-input {
+    width: calc(100% - 20px);
+  }
+
+  /* Ajuster les étapes */
+  .step-box {
+    margin: 10px;
+    padding: 15px;
+  }
+
+  input[type="text"] {
+    width: calc(100% - 20px);
+    font-size: 16px;
+    /* Empêcher le zoom sur iOS */
+  }
+
+  /* Ajuster le loader */
+  .loader-text {
+    font-size: 1.5em;
+    padding: 0 20px;
+  }
+
+  /* Ajuster la popup */
+  .popup {
+    width: 85%;
+    padding: 20px;
+    margin: 10px;
+  }
+
+  /* Styles pour les animations */
+  .fade-in {
+    animation-duration: 0.4s;
+  }
+
+  /* Optimiser les performances */
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .hint-box {
+    margin: 10px 0;
+    padding: 12px;
+  }
+}
+
+/* Fix pour les très petits écrans */
+@media screen and (max-width: 320px) {
+  .intro-content h1 {
+    font-size: 1.8rem;
+  }
+
+  button {
+    width: 100%;
+  }
+}
+
+/* Fix pour le clavier virtuel */
+@media screen and (max-height: 500px) {
+  .progress-map {
+    display: none;
+  }
+}
