@@ -73,7 +73,7 @@ const steps = [
     code: "BRAVO"
   },
   {
-    text: `<h3>Étape 8 : Face à moi</h3>
+    text: `<h3>Étape 8 : La Finaaaaaaaaal</h3>
            <p class="timing">Dernier instant avant le grand moment</p>
            <div class="enigme">
              <p><strong>Action :</strong> Tu es arrivée… ❤️ Ferme un instant les yeux, respire profondément, et quand tu es prête... clique ici.</p>
@@ -395,7 +395,7 @@ function renderStep() {
     });
   } else if (currentStep === 3 && notificationsEnabled) {
     new Notification("🌟 Étape 4 en approche !", {
-      body: "Prends ton sac et file-y, une rencontre spéciale t'attend.",
+      body: "Fais ton sac, et bonus j'aime te voir maquiller prend ton maquillage et fais toi belle mais finis l'etape ne te maquille pas chez toi.",
       icon: "icon-192.png"
     });
   }
