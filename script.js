@@ -1,65 +1,65 @@
 const steps = [
   {
-    text: `<h3>Étape 1 : Test de réactivité</h3>
-           <p class="timing">À réaliser vendredi - Objectif : 11h30</p>
+    text: `<h3>Étape 1 : La magie Rose</h3>
+           <p class="timing">À réaliser vendredi - Tu doit etre sur place a 12h00</p>
            <div class="enigme">
              <p><strong>Énigme :</strong> Un endroit très girly, souvent croisé mais jamais exploré… le rose te guidera 💅</p>
-             <p><strong>Action :</strong> Une fois là-bas, dis : « Bonjour, j'aime la vanille ». Et laisse la magie opérer... À la fin, tu recevras un code. 💅</p>
+             <p><strong>Action :</strong> Une fois là-bas, dis ton mot déclencheur : « Bonjour, j'aime la vanille ». Et laisse la magie opérer... À la fin, tu recevras un code qui te fais passer a l'etape suivant.</p>
            </div>`,
     hint: "Un lieu : tout est rose, girly, on passe souvent devant. Loin de moi, près de toi.",
     code: "ONGLES01"
   },
   {
     text: `<h3>Étape 2 : Une Petite Pause qui fait plaisir</h3>
-           <p class="timing">À réaliser vendredi - Maintenant go .. </p>
+           <p class="timing">À réaliser - MAINTENANT GOOO .. </p>
            <div class="enigme">
-             <p><strong>Énigme :</strong> On y a passé des heures à refaire le monde autour d’un café… ☕</p>
+             <p><strong>Énigme :</strong> la ou notre histoire s’est ancrée.</p>
              <p><strong>Action :</strong> Une fois là-bas, dis : « C’est ici qu’on a refait le monde ». Ne commande rien, souris juste... 😉</p>
 
            </div>`,
-    hint: "Rends-toi dans le café où notre histoire s’est ancrée.",
+    hint: "Nos entretien ",
     code: "CAFE02"
   },
   {
     text: `<h3>Étape 3 : Un frisson du passé</h3>
-           <p class="timing">À faire sans tarder…</p>
+           <p class="timing">A faire samedi - Matin a 10h00 </p>
            <div class="enigme">
-             <p><strong>Énigme :</strong> Va à l’endroit le plus proche de toi. Tu y trouveras un petit sac.</p>
-             <p><strong>Action :</strong> Saisis ici le mot trouvé dans ce sac secret…</p>
+             <p><strong>Énigme :</strong> Sous sole c'est bizarre ? c'etait le notre <b>premier frisson partagé</b> </p>
+             <p><strong>Action :</strong> T'as pas besoins de prendre le bus pour aller va a celui ou tu viens me recuperer</p>
            </div>`,
-    hint: "Ce petit coin discret… notre premier frisson partagé 💋",
-    code: "BISOU03"
+    hint: "Barbecue la rammé en suite cugnaux ",
+    code: "NINOUILLE"
   },
   {
-    text: `<h3>Étape 4 : Le repaire complice</h3>
+    text: `<h3>Étape 4 : Rencontre crevette</h3>
            <p class="timing">Prends ton temps, mais file-y !</p>
            <div class="enigme">
-             <p><strong>Énigme :</strong> Rends-toi à l’appartement où nous avons dormi ensemble (ni chez toi, ni chez moi).</p>
-             <p><strong>Action :</strong> Une personne complice t’y attend. Clique quand tout est terminé.</p>
+             <p><strong>Énigme :</strong> l’appartement où jai fais ma premier rencontre avec soleil .</p>
+             <p><strong>Action :</strong>Tu fais ton sac perso et go le plus vite possible et oublie pas les sacs que tu as recuperer</p>
            </div>`,
-    hint: "Un lieu refuge partagé… et une alliée t’attend à l’intérieur 🫶",
+    hint: " Soleil en arabe, Iftar ramadhan, Police Portugais ",
     button: "Fini",
-    code: "FINI04"
+    code: "CHAMSSI"
   },
   {
-    text: `<h3>Étape 5 : Mot doux du matin</h3>
-           <p class="timing">Petite introspection 💭</p>
+    text: `<h3>Étape 5 BONUS hihi: Mot doux du matin</h3>
+           <p class="timing">Petite introspection 💭 </p>
            <div class="enigme">
-             <p><strong>Énigme :</strong> Réponds à cette question : comment je t'appelle à chaque réveil ?</p>
-             <p><strong>Action :</strong> Tape ici ce petit nom plein d’amour...</p>
+             <p><strong>Énigme :</strong> Reveil, Tout les quatre matin, tu lache tout et tu viens</p>
+             <p><strong>Action :</strong> Lis et relis reflichis puis ecrits le nom qui te vient à l'esprit</p>
            </div>`,
-    hint: "Indice : c’est doux, c’est tendre, et tu souris à chaque fois ✨",
-    code: "MONANGE"
+    hint: "Indice : on en a parler il y a 4 jrs ✨",
+    code: "Béééé"
   },
   {
-    text: `<h3>Étape 6 : Le grand départ</h3>
-           <p class="timing">Descends dès que tu es prête</p>
+    text: `<h3>Étape 6 : Etape de aurevoir</h3>
+           <p class="timing">Si </p>
            <div class="enigme">
              <p><strong>Énigme :</strong> Une voiture avec la plaque EE-546-EE t’attend. Ne pose aucune question.</p>
              <p><strong>Action :</strong> Le chauffeur te remettra un code à l’arrivée.</p>
            </div>`,
     hint: "C’est plus qu’un trajet… c’est la route vers moi. 🚗",
-    code: "CHAUFFEUR06"
+    code: "TUKIFF"
   },
   {
     text: `<h3>Étape 7 : Le dernier mot</h3>
@@ -68,9 +68,9 @@ const steps = [
              <p><strong>Énigme :</strong> Entre dans le hall de l’hôtel. Approche-toi de l’accueil, regarde dans les yeux la personne derrière le comptoir, et dis calmement : « Vanille ».</p>
              <p><strong>Action :</strong> Tu obtiendras un numéro de chambre. Une fois devant la porte, entre le code ici :</p>
            </div>`,
-    hint: "Vanille… notre mot secret pour se retrouver 🍨",
+    hint: "Béééé notre mot secret pour se retrouver 🍨",
     button: "J’y suis",
-    code: "CHAMBRE07"
+    code: "BRAVO"
   },
   {
     text: `<h3>Étape 8 : Face à moi</h3>
@@ -332,39 +332,7 @@ function askNotificationPermission() {
     });
   }
 }
-
-
-
-function renderStep() {
-  const container = document.getElementById("step-container");
-  const step = steps[currentStep];
-  const escapedHint = step.hint ? step.hint.replace(/'/g, "\\'") : "";
-  
-  container.innerHTML = `
-    <div class="step-box fade-in">
-      <div class="step-content">
-        <p class="step-text">${step.text}</p>
-        ${step.code ? `<input type="text" id="codeInput" class="fade-in" placeholder="Entre le code ici" />` : ""}
-        <button onclick="checkCode()">${step.button || "Valider"}</button>
-      </div>
-      <div id="message" class="message"></div>
-      ${step.hint ? `<p><a href="#" class="hint-link" onclick="showHint(\`${escapedHint}\`); return false;">Besoin d'un indice ?</a></p>` : ""}
-    </div>
-  `;
-}
-
-function showHint(hint) {
-  console.log('showHint called with:', hint); // Debug
-  const messageEl = document.getElementById("message");
-  if (!messageEl) return;
-
-  messageEl.innerHTML = `
-    <div class="hint-box fade-in">
-      💡 ${hint}
-    </div>
-  `;
-}
-
+// Modifier la fonction checkCode pour inclure l'animation
 function checkCode() {
   const step = steps[currentStep];
   const inputEl = document.getElementById("codeInput");
@@ -414,6 +382,49 @@ function checkCode() {
     messageEl.innerHTML = "<div class='hint-box fade-in error'>❌ Code incorrect. Réessaie avec ton cœur.</div>";
   }
 }
+function renderStep() {
+  const container = document.getElementById("step-container");
+  const step = steps[currentStep];
+  const escapedHint = step.hint ? step.hint.replace(/'/g, "\\'") : "";
+  
+  // Notifications personnalisées
+  if (currentStep === 2 && notificationsEnabled) {
+    new Notification("💡 Ah Ouai! t'es deja la ?", {
+      body: "Récompence : tu as le droit de me poser une question si tu bloque sur une étape garde la au chaud tu sais pas quand tu aura besoin.",
+      icon: "icon-192.png"
+    });
+  } else if (currentStep === 3 && notificationsEnabled) {
+    new Notification("🌟 Étape 4 en approche !", {
+      body: "Prends ton sac et file-y, une rencontre spéciale t'attend.",
+      icon: "icon-192.png"
+    });
+  }
+
+  container.innerHTML = `
+    <div class="step-box fade-in">
+      <div class="step-content">
+        <p class="step-text">${step.text}</p>
+        ${step.code ? `<input type="text" id="codeInput" class="fade-in" placeholder="Entre le code ici" />` : ""}
+        <button onclick="checkCode()">${step.button || "Valider"}</button>
+      </div>
+      <div id="message" class="message"></div>
+      ${step.hint ? `<p><a href="#" class="hint-link" onclick="showHint(\`${escapedHint}\`); return false;">Besoin d'un indice ?</a></p>` : ""}
+    </div>
+  `;
+}
+
+function showHint(hint) {
+  console.log('showHint called with:', hint); // Debug
+  const messageEl = document.getElementById("message");
+  if (!messageEl) return;
+
+  messageEl.innerHTML = `
+    <div class="hint-box fade-in">
+      💡 ${hint}
+    </div>
+  `;
+}
+
 function triggerFinalMoment() {
   const container = document.getElementById("step-container");
   container.innerHTML = `
@@ -578,15 +589,17 @@ function viewResponses() {
 
 const stepIcons = ['💅', '☕', '💋', '🏠', '💝', '🚗', '🏨', '❤️'];
 const stepNames = [
-  'Beauté Rose',
-  'Pause Café',
-  'Frisson Secret',
-  'Nid Douillet',
-  'Mots Doux',
-  'En Route',
-  'Destination',
-  'Face à Face'
-];
+    'Etape 1 : Pesahtek les ongles',
+    'Pause Café : HAHA ouvre pas le sac',
+    'Frisson Secret : Le paaaarkiiing BEBEEE',
+    'Nid Douillet',
+    'Mots Doux Béééé 4',
+    'En Route',
+    'Destination',
+    'Face à Face'
+  ]
+;
+// Mettre à jour la carte de progression
 
 function updateProgressMap() {
   const container = document.querySelector('.steps-container');
@@ -594,7 +607,7 @@ function updateProgressMap() {
   
   container.innerHTML = `
     <div class="progress-bar">
-      <div class="progress-bar-fill" style="width: ${progress}%"></div>
+      <div class="progress-bar-fill" style="width: ${progress}%; background-color: #ff7096;"></div>
     </div>
   `;
 
@@ -607,8 +620,8 @@ function updateProgressMap() {
       stepElement.className = `map-step ${completed ? 'completed' : ''} ${isCurrent ? 'current' : ''}`;
       stepElement.innerHTML = `
         <div class="step-content">
-          <div class="step-icon">${stepIcons[index]}</div>
-          <div class="step-name">${stepNames[index]}</div>
+          <div class="step-icon" style="font-size: 24px;">${stepIcons[index]}</div>
+          <div class="step-name" style="font-weight: bold; color: ${isCurrent ? '#ff7096' : '#333'};">${stepNames[index]}</div>
           ${completed ? '<div class="step-badge">✨</div>' : ''}
         </div>
       `;
@@ -632,57 +645,34 @@ function completeStep() {
     currentStepEl.style.filter = 'blur(0)';
     currentStepEl.style.opacity = '1';
   }
+
+  // Afficher un popup de félicitations
+  const popup = document.createElement('div');
+  popup.className = 'popup-congrats fade-in';
+  popup.style.position = 'fixed';
+  popup.style.top = '0';
+  popup.style.left = '0';
+  popup.style.width = '100%';
+  popup.style.height = '100%';
+  popup.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
+  popup.style.display = 'flex';
+  popup.style.justifyContent = 'center';
+  popup.style.alignItems = 'center';
+  popup.style.zIndex = '1000'; // Ensure it appears above all other elements
+
+  popup.innerHTML = `
+    <div class="popup-content" style="background: white; padding: 20px; border-radius: 10px; text-align: center;">
+      <h2>🎉 Félicitations !</h2>
+      <p>T'es forte mdrr c'est bebe bravo ! continue comme ça !</p>
+      <button onclick="closePopup()" style="padding: 10px 20px; font-size: 16px; border: none; background: #ff7096; color: white; border-radius: 5px; cursor: pointer;">Continuer</button>
+    </div>
+  `;
+  document.body.appendChild(popup);
 }
 
-// Modifier la fonction checkCode pour inclure l'animation
-function checkCode() {
-  const step = steps[currentStep];
-  const inputEl = document.getElementById("codeInput");
-  const input = inputEl ? inputEl.value.trim().toUpperCase() : null;
-  const expected = step.code ? step.code.toUpperCase() : null;
-  const container = document.getElementById("step-container");
-  const messageEl = document.getElementById("message");
-
-  if (!step.code || input === expected) {
-    completeStep();
-    // Envoyer le code au Google Sheet
-    const formData = new FormData();
-    formData.append('type', 'step');
-    formData.append('timestamp', new Date().toISOString());
-    formData.append('stepNumber', currentStep + 1);
-    formData.append('code', input);
-    formData.append('secret', 'ishtar-code-secret');
-
-    fetch("https://script.google.com/macros/s/AKfycbwGtB0aq7myxN8f0LaBwpWJCV2Ti80XJUWMXyqwupP9vVJ7gIrBpltsKhmwj67iFLNcDA/exec", {
-      method: "POST",
-      mode: 'no-cors',
-      body: formData
-    }).catch(error => console.log('Erreur envoi code:', error));
-
-    currentStep++;
-    updateProgressMap(); // Mettre à jour la carte
-    if (currentStep < steps.length) {
-      container.classList.add('fade-out');
-      setTimeout(() => {
-        renderStep();
-        container.classList.remove('fade-out');
-      }, 500);
-    } else {
-      container.innerHTML = `
-  <div class="final-step fade-in">
-    <h2 class="heartbeat">Tu es là… ❤️</h2>
-    <p class="soft-fade">Ferme les yeux quelques secondes.</p>
-    <p class="soft-fade">Respire profondément.</p>
-    <p class="soft-fade">Laisse ton cœur faire le reste.</p>
-    <button class="big-button zoom-smooth appear-smooth" onclick="triggerFinalMoment()">Je suis prête</button>
-
-
-  </div>
-`;
-    }
-  } else {
-    messageEl.innerHTML = "<div class='hint-box fade-in error'>❌ Code incorrect. Réessaie avec ton cœur.</div>";
-  }
+function closePopup() {
+  const popup = document.querySelector('.popup-congrats');
+  if (popup) popup.remove();
 }
 
 function showStepDetails(index) {
