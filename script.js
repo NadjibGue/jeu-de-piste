@@ -531,20 +531,28 @@ function createConfetti(amount) {
 }
 
 function revealFinal() {
-  document.body.innerHTML = `
-    <div class="final-reveal" style="height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #ff69b4, #ff1493); color: white; text-align: center;">
-      <div>
-        <h1 style="font-size: 3em; margin-bottom: 0.5em;">❤️</h1>
-        <p style="font-size: 1.5em; max-width: 600px; margin: 0 auto;">Retourne-toi...</p>
-      </div>
-    </div>
-  `;
+  // Transition douce
+  document.body.style.transition = 'opacity 2s ease';
+  document.body.style.opacity = '0';
   
-  // Effet final maximal
-  startGradualConfetti();
-  if (navigator.vibrate) {
-    navigator.vibrate([200, 100, 200]);
-  }
+  setTimeout(() => {
+    document.body.innerHTML = `
+      <div class="final-reveal" style="height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #ff69b4, #ff1493); color: white; text-align: center; opacity: 0; transition: opacity 2s ease;">
+        <div>
+          <h1 style="font-size: 3em; margin-bottom: 0.5em; animation: heartbeat 1.5s infinite;">❤️</h1>
+          <p style="font-size: 2em; max-width: 600px; margin: 0 auto; text-shadow: 0 0 10px rgba(255,255,255,0.5);">Retourne-toi doucement...</p>
+        </div>
+      </div>
+    `;
+    document.body.style.opacity = '1';
+    
+    // Vibration plus douce et rythmée
+    if (navigator.vibrate) {
+      navigator.vibrate([100, 100, 100, 100, 200]);
+    }
+    
+    startGradualConfetti();
+  }, 2000);
 }
 
 function createPetalEffect() {
@@ -751,13 +759,8 @@ function completeStep() {
     currentStepEl.style.opacity = '1';
   }
 
-  // Vérifier si nous sommes à l'étape du code BRAVO
-  const step = steps[currentStep];
-  const inputEl = document.getElementById("codeInput");
-  const input = inputEl ? inputEl.value.trim().toUpperCase() : null;
-
-  // Ne pas afficher le popup si nous sommes à la dernière étape avec le code BRAVO
-  if (input !== "BRAVO") {
+  // Ne pas afficher le popup à partir de l'étape 7
+  if (currentStep < 6) { // 6 correspond à l'index de l'étape 7 (car on commence à 0)
     const popup = document.createElement('div');
     popup.className = 'popup-congrats fade-in';
     popup.style.position = 'fixed';
