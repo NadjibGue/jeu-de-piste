@@ -27,16 +27,15 @@
 
   <!-- SERVICE WORKER -->
   <script>
-    // Enregistrement amélioré du Service Worker
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./service-worker.js')
-          .then(registration => {
-            console.log('✅ Service Worker enregistré :', registration.scope);
-          })
-          .catch(error => {
-            console.error('❌ Erreur Service Worker :', error);
-          });
+        navigator.serviceWorker.register('/service-worker.js', {
+          scope: '/'
+        }).then(registration => {
+          console.log('✅ Service Worker enregistré avec succès');
+        }).catch(error => {
+          console.error('❌ Erreur lors de l\'enregistrement du Service Worker:', error);
+        });
       });
     }
   </script>
@@ -69,11 +68,21 @@
 
   <!-- 🌸 Contenu principal -->
   <main id="mainContent">
-    <!-- Ajouter la carte de progression -->
+    <!-- Bouton fixe pour la carte -->
+    <button id="mapButton" class="map-toggle" onclick="toggleMap()">
+      <span>📍</span>
+      <div class="map-indicator">Voir ta progression!</div>
+    </button>
+    
+    <!-- Carte de progression -->
     <div id="progressMap" class="progress-map">
-      <div class="progress-title">Ta progression 🗺️</div>
+      <div class="progress-header">
+        <h3 class="progress-title">Ta progression 🗺️</h3>
+        <div class="progress-bar">
+          <div class="progress-bar-fill"></div>
+        </div>
+      </div>
       <div class="steps-container"></div>
-      <button class="map-toggle" onclick="toggleMap()">📍</button>
     </div>
     <section class="intro" id="intro">
       <div class="intro-content">

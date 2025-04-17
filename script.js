@@ -384,23 +384,18 @@ function checkCode() {
 }
 function renderStep() {
   const container = document.getElementById("step-container");
+  if (!container) return;
+
   const step = steps[currentStep];
+  if (!step) return;
+
+  // Nettoyer les classes de transition
+  container.classList.remove('fade-out');
+  
   const escapedHint = step.hint ? step.hint.replace(/'/g, "\\'") : "";
   
-  // Notifications personnalisées
-  if (currentStep === 2 && notificationsEnabled) {
-    new Notification("💡 Ah Ouai! t'es deja la ?", {
-      body: "Récompence : tu as le droit de me poser une question si tu bloque sur une étape garde la au chaud tu sais pas quand tu aura besoin.",
-      icon: "icon-192.png"
-    });
-  } else if (currentStep === 3 && notificationsEnabled) {
-    new Notification("🌟 Étape 4 en approche !", {
-      body: "Fais ton sac, et bonus j'aime te voir maquiller prend ton maquillage et fais toi belle mais finis l'etape ne te maquille pas chez toi.",
-      icon: "icon-192.png"
-    });
-  }
-
-  container.innerHTML = `
+  // Créer le contenu avant de l'insérer
+  const content = `
     <div class="step-box fade-in">
       <div class="step-content">
         <p class="step-text">${step.text}</p>
@@ -411,6 +406,16 @@ function renderStep() {
       ${step.hint ? `<p><a href="#" class="hint-link" onclick="showHint(\`${escapedHint}\`); return false;">Besoin d'un indice ?</a></p>` : ""}
     </div>
   `;
+
+  // S'assurer que le conteneur est visible
+  container.style.display = 'block';
+  container.style.opacity = '1';
+  
+  // Insérer le contenu
+  container.innerHTML = content;
+
+  // Mettre à jour la carte de progression
+  updateProgressMap();
 }
 
 function showHint(hint) {
@@ -428,81 +433,75 @@ function showHint(hint) {
 function triggerFinalMoment() {
   const container = document.getElementById("step-container");
   
-  // Démarre une musique douce (optionnel)
-  const music = new Audio('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3');
-  music.volume = 0.3;
-  music.play().catch(err => console.log('Autoplay prevented'));
-
-  // Séquence finale avec transitions
-  container.innerHTML = `
-    <div class="ending-sequence">
-      <div class="ending-step" id="step1">
-        <h2 class="fade-in">Ferme les yeux...</h2>
-        <p class="fade-in-delay">Prends une grande respiration...</p>
-      </div>
-      <div class="ending-step hidden" id="step2">
-        <h2>Tout ce chemin parcouru...</h2>
-        <p>Chaque étape nous a rapprochés...</p>
-      </div>
-      <div class="ending-step hidden" id="step3">
-        <h2>Et maintenant...</h2>
-        <p>Tu y es presque...</p>
-      </div>
-      <div class="ending-step hidden" id="step4">
-        <h2 class="heartbeat">❤️</h2>
-        <p class="glow">Ouvre doucement les yeux...</p>
-        <button class="final-button shine" onclick="revealFinal()">Je suis prête</button>
-      </div>
-    </div>
-  `;
-
-  // Ajoute les styles pour l'animation
-  const style = document.createElement('style');
-  style.innerHTML = `
-    .ending-sequence { text-align: center; padding: 2em; }
-    .ending-step { transition: opacity 1.5s ease-in-out; }
-    .hidden { opacity: 0; display: none; }
-    .heartbeat { animation: heartbeat 1.5s ease-in-out infinite; }
-    .glow { animation: glow 2s ease-in-out infinite; }
-    .shine { animation: shine 2s infinite; }
-    @keyframes heartbeat {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.1); }
-      100% { transform: scale(1); }
-    }
-    @keyframes glow {
-      0% { text-shadow: 0 0 10px #fff; }
-      50% { text-shadow: 0 0 20px #ff69b4, 0 0 30px #ff69b4; }
-      100% { text-shadow: 0 0 10px #fff; }
-    }
-    @keyframes shine {
-      0% { background-position: -100px; }
-      100% { background-position: 200px; }
-    }
-  `;
-  document.head.appendChild(style);
-
-  // Séquence temporelle des transitions
-  setTimeout(() => showEndingStep('step2'), 4000);
-  setTimeout(() => showEndingStep('step3'), 8000);
-  setTimeout(() => showEndingStep('step4'), 12000);
+  // Assurer que le conteneur est propre
+  container.innerHTML = '';
+  container.className = 'final-container';
   
-  // Lance l'effet confetti progressivement
-  startGradualConfetti();
+  // Créer une séquence plus fluide
+  const sequence = [
+    {
+      text: "Ferme les yeux...",
+      delay: 0,
+      class: "fade-in-slow"
+    },
+    {
+      text: "Prends une grande respiration...",
+      delay: 3000,
+      class: "fade-in-delayed"
+    },
+    {
+      text: "Pense à tout ce chemin parcouru...",
+      delay: 6000,
+      class: "fade-in-delayed glow-text"
+    },
+    {
+      text: "Tu y es presque...",
+      delay: 9000,
+      class: "fade-in-delayed pulse-text"
+    }
+  ];
+
+  sequence.forEach(step => {
+    setTimeout(() => {
+      const div = document.createElement('div');
+      div.className = `final-text ${step.class}`;
+      div.textContent = step.text;
+      container.appendChild(div);
+    }, step.delay);
+  });
+
+  // Ajouter le bouton final après la séquence
+  setTimeout(() => {
+    const finalButton = document.createElement('button');
+    finalButton.className = 'final-button appear-smooth';
+    finalButton.textContent = 'Je suis prête';
+    finalButton.onclick = revealFinal;
+    container.appendChild(finalButton);
+  }, 12000);
 }
 
-function showEndingStep(stepId) {
-  const currentStep = document.querySelector('.ending-step:not(.hidden)');
-  const nextStep = document.getElementById(stepId);
-  
-  if (currentStep) {
-    currentStep.style.opacity = 0;
-    setTimeout(() => {
-      currentStep.classList.add('hidden');
-      nextStep.classList.remove('hidden');
-      setTimeout(() => nextStep.style.opacity = 1, 100);
-    }, 1500);
-  }
+function revealFinal() {
+  // Transition douce vers le noir
+  const overlay = document.createElement('div');
+  overlay.className = 'final-overlay';
+  document.body.appendChild(overlay);
+
+  setTimeout(() => {
+    document.body.innerHTML = `
+      <div class="final-reveal">
+        <div class="final-message">
+          <h1 class="heartbeat">❤️</h1>
+          <p class="fade-in-delayed">Retourne-toi doucement...</p>
+        </div>
+      </div>
+    `;
+    startGradualConfetti();
+    
+    // Vibration douce et rythmée
+    if (navigator.vibrate) {
+      navigator.vibrate([100, 200, 100, 200, 300]);
+    }
+  }, 1000);
 }
 
 function startGradualConfetti() {
@@ -528,31 +527,6 @@ function createConfetti(amount) {
     document.body.appendChild(confetti);
     setTimeout(() => confetti.remove(), 5000);
   }
-}
-
-function revealFinal() {
-  // Transition douce
-  document.body.style.transition = 'opacity 2s ease';
-  document.body.style.opacity = '0';
-  
-  setTimeout(() => {
-    document.body.innerHTML = `
-      <div class="final-reveal" style="height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #ff69b4, #ff1493); color: white; text-align: center; opacity: 0; transition: opacity 2s ease;">
-        <div>
-          <h1 style="font-size: 3em; margin-bottom: 0.5em; animation: heartbeat 1.5s infinite;">❤️</h1>
-          <p style="font-size: 2em; max-width: 600px; margin: 0 auto; text-shadow: 0 0 10px rgba(255,255,255,0.5);">Retourne-toi doucement...</p>
-        </div>
-      </div>
-    `;
-    document.body.style.opacity = '1';
-    
-    // Vibration plus douce et rythmée
-    if (navigator.vibrate) {
-      navigator.vibrate([100, 100, 100, 100, 200]);
-    }
-    
-    startGradualConfetti();
-  }, 2000);
 }
 
 function createPetalEffect() {
@@ -716,37 +690,48 @@ const stepNames = [
 
 function updateProgressMap() {
   const container = document.querySelector('.steps-container');
-  const progress = Math.round((currentStep / (steps.length - 1)) * 100);
+  const totalSteps = steps.length - 2; // Exclure l'étape finale et le message de fin
+  const progress = Math.round((currentStep / totalSteps) * 100);
   
-  container.innerHTML = `
-    <div class="progress-bar">
-      <div class="progress-bar-fill" style="width: ${progress}%; background-color: #ff7096;"></div>
-    </div>
-  `;
+  const progressFill = document.querySelector('.progress-bar-fill');
+  if (progressFill) {
+    progressFill.style.width = `${progress}%`;
+    progressFill.setAttribute('data-progress', `${progress}%`);
+  }
 
+  container.innerHTML = '';
+  
   steps.forEach((step, index) => {
-    if (!step.text.includes('Fin :')) {
-      const stepElement = document.createElement('div');
-      const completed = index < currentStep;
-      const isCurrent = index === currentStep;
-      
-      stepElement.className = `map-step ${completed ? 'completed' : ''} ${isCurrent ? 'current' : ''}`;
-      stepElement.innerHTML = `
-        <div class="step-content">
-          <div class="step-icon" style="font-size: 24px;">${stepIcons[index]}</div>
-          <div class="step-name" style="font-weight: bold; color: ${isCurrent ? '#ff7096' : '#333'};">${stepNames[index]}</div>
-          ${completed ? '<div class="step-badge">✨</div>' : ''}
-        </div>
-      `;
-
-      if (completed || isCurrent) {
-        stepElement.style.cursor = 'pointer';
-        stepElement.onclick = () => showStepDetails(index);
-      }
-      
+    if (index < totalSteps) {
+      const stepElement = createStepElement(step, index);
       container.appendChild(stepElement);
     }
   });
+}
+
+function createStepElement(step, index) {
+  const stepElement = document.createElement('div');
+  const completed = index < currentStep;
+  const isCurrent = index === currentStep;
+  
+  stepElement.className = `map-step ${completed ? 'completed' : ''} ${isCurrent ? 'current' : ''}`;
+  stepElement.innerHTML = `
+    <div class="step-content">
+      <div class="step-icon">${stepIcons[index]}</div>
+      <div class="step-info">
+        <div class="step-name">${stepNames[index]}</div>
+        <div class="step-status">
+          ${completed ? '✨ Terminé' : isCurrent ? '🎯 En cours' : ''}
+        </div>
+      </div>
+    </div>
+  `;
+
+  if (completed || isCurrent) {
+    stepElement.addEventListener('click', () => showStepDetails(index));
+  }
+
+  return stepElement;
 }
 
 // Ajouter animation quand une étape est complétée
@@ -799,5 +784,25 @@ function showStepDetails(index) {
 
 function toggleMap() {
   const map = document.getElementById('progressMap');
-  map.classList.toggle('visible');
+  const button = document.getElementById('mapButton');
+  
+  if (map.classList.contains('visible')) {
+    map.classList.remove('visible');
+    button.classList.remove('active');
+  } else {
+    updateProgressMap();
+    map.classList.add('visible');
+    button.classList.add('active');
+    button.classList.remove('show-indicator');
+  }
 }
+
+// Initialisation de la carte dès le chargement
+document.addEventListener('DOMContentLoaded', () => {
+  const mapButton = document.getElementById('mapButton');
+  if (mapButton) {
+    setTimeout(() => {
+      mapButton.classList.add('show-indicator');
+    }, 2000);
+  }
+});
