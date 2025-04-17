@@ -48,14 +48,23 @@
       <h2 id="access-title">Code d'accès requis</h2>
       <p>Ton code de jeu sera donné jeudi à 21h, reste à l’affût !</p>
       <p style="color: brown;"><strong>MONTE LE SON DE TON TÉLÉPHONE ET AUTORISE LES NOTIFICATIONS</strong></p>
-      <p style="color: rgb(255, 15, 15);">Tu peux suivre ta progression sur le button rose en haut a gauche </p>
+      <p style="color: rgb(255, 15, 15);">Tu peux suivre ta progression sur le bouton rose en haut à gauche</p>
       <form id="accessForm" onsubmit="handleAccessCode(event)">
         <input type="password" id="accessCodeInput" placeholder="Entrez le code d'accès" autocomplete="off" />
         <button type="submit">Valider</button>
       </form>
       <p id="accessError" class="error-message"></p>
+  
+      <!-- 🔗 Lien pour aider à installer l'appli -->
+      <p style="margin-top: 20px; font-size: 0.95em; color: #ff4081;">
+        📲 Pour installer l'appli sur ton téléphone :  
+        <a href="https://nadjibgue.github.io/jeu-de-piste/install.html" target="_blank" style="color: #ff4081; text-decoration: underline;">
+          Clique ici
+        </a>
+      </p>
     </div>
   </div>
+  
 
   <!-- 🎬 Écran de préchargement romantique -->
   <div id="loader" class="loader" role="status" aria-label="Chargement">
