@@ -427,20 +427,125 @@ function showHint(hint) {
 
 function triggerFinalMoment() {
   const container = document.getElementById("step-container");
+  
+  // Démarre une musique douce (optionnel)
+  const music = new Audio('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3');
+  music.volume = 0.3;
+  music.play().catch(err => console.log('Autoplay prevented'));
+
+  // Séquence finale avec transitions
   container.innerHTML = `
-    <div class="ending fade-in">
-      <h2>💖 Ferme les yeux maintenant.</h2>
-      <p>Quelqu’un t’attend juste là.<br><strong>Prête ? Avance doucement…</strong></p>
+    <div class="ending-sequence">
+      <div class="ending-step" id="step1">
+        <h2 class="fade-in">Ferme les yeux...</h2>
+        <p class="fade-in-delay">Prends une grande respiration...</p>
+      </div>
+      <div class="ending-step hidden" id="step2">
+        <h2>Tout ce chemin parcouru...</h2>
+        <p>Chaque étape nous a rapprochés...</p>
+      </div>
+      <div class="ending-step hidden" id="step3">
+        <h2>Et maintenant...</h2>
+        <p>Tu y es presque...</p>
+      </div>
+      <div class="ending-step hidden" id="step4">
+        <h2 class="heartbeat">❤️</h2>
+        <p class="glow">Ouvre doucement les yeux...</p>
+        <button class="final-button shine" onclick="revealFinal()">Je suis prête</button>
+      </div>
     </div>
   `;
-  confettiRain();
 
-  // Optionnel : vibration mobile (1 seconde)
-  if (navigator.vibrate) {
-    navigator.vibrate(1000);
+  // Ajoute les styles pour l'animation
+  const style = document.createElement('style');
+  style.innerHTML = `
+    .ending-sequence { text-align: center; padding: 2em; }
+    .ending-step { transition: opacity 1.5s ease-in-out; }
+    .hidden { opacity: 0; display: none; }
+    .heartbeat { animation: heartbeat 1.5s ease-in-out infinite; }
+    .glow { animation: glow 2s ease-in-out infinite; }
+    .shine { animation: shine 2s infinite; }
+    @keyframes heartbeat {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+    @keyframes glow {
+      0% { text-shadow: 0 0 10px #fff; }
+      50% { text-shadow: 0 0 20px #ff69b4, 0 0 30px #ff69b4; }
+      100% { text-shadow: 0 0 10px #fff; }
+    }
+    @keyframes shine {
+      0% { background-position: -100px; }
+      100% { background-position: 200px; }
+    }
+  `;
+  document.head.appendChild(style);
+
+  // Séquence temporelle des transitions
+  setTimeout(() => showEndingStep('step2'), 4000);
+  setTimeout(() => showEndingStep('step3'), 8000);
+  setTimeout(() => showEndingStep('step4'), 12000);
+  
+  // Lance l'effet confetti progressivement
+  startGradualConfetti();
+}
+
+function showEndingStep(stepId) {
+  const currentStep = document.querySelector('.ending-step:not(.hidden)');
+  const nextStep = document.getElementById(stepId);
+  
+  if (currentStep) {
+    currentStep.style.opacity = 0;
+    setTimeout(() => {
+      currentStep.classList.add('hidden');
+      nextStep.classList.remove('hidden');
+      setTimeout(() => nextStep.style.opacity = 1, 100);
+    }, 1500);
   }
 }
 
+function startGradualConfetti() {
+  let intensity = 0;
+  const maxIntensity = 100;
+  const interval = setInterval(() => {
+    if (intensity >= maxIntensity) {
+      clearInterval(interval);
+      return;
+    }
+    createConfetti(intensity);
+    intensity += 5;
+  }, 1000);
+}
+
+function createConfetti(amount) {
+  for (let i = 0; i < amount; i++) {
+    const confetti = document.createElement('div');
+    confetti.className = 'confetti';
+    confetti.style.left = Math.random() * 100 + 'vw';
+    confetti.style.animationDuration = (Math.random() * 3 + 2) + 's';
+    confetti.style.background = `hsl(${Math.random() * 360}, 100%, 75%)`;
+    document.body.appendChild(confetti);
+    setTimeout(() => confetti.remove(), 5000);
+  }
+}
+
+function revealFinal() {
+  document.body.innerHTML = `
+    <div class="final-reveal" style="height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #ff69b4, #ff1493); color: white; text-align: center;">
+      <div>
+        <h1 style="font-size: 3em; margin-bottom: 0.5em;">❤️</h1>
+        <p style="font-size: 1.5em; max-width: 600px; margin: 0 auto;">Retourne-toi...</p>
+      </div>
+    </div>
+  `;
+  
+  // Effet final maximal
+  startGradualConfetti();
+  if (navigator.vibrate) {
+    navigator.vibrate([200, 100, 200]);
+  }
+}
 
 function createPetalEffect() {
   const style = document.createElement('style');
@@ -646,28 +751,35 @@ function completeStep() {
     currentStepEl.style.opacity = '1';
   }
 
-  // Afficher un popup de félicitations
-  const popup = document.createElement('div');
-  popup.className = 'popup-congrats fade-in';
-  popup.style.position = 'fixed';
-  popup.style.top = '0';
-  popup.style.left = '0';
-  popup.style.width = '100%';
-  popup.style.height = '100%';
-  popup.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
-  popup.style.display = 'flex';
-  popup.style.justifyContent = 'center';
-  popup.style.alignItems = 'center';
-  popup.style.zIndex = '1000'; // Ensure it appears above all other elements
+  // Vérifier si nous sommes à l'étape du code BRAVO
+  const step = steps[currentStep];
+  const inputEl = document.getElementById("codeInput");
+  const input = inputEl ? inputEl.value.trim().toUpperCase() : null;
 
-  popup.innerHTML = `
-    <div class="popup-content" style="background: white; padding: 20px; border-radius: 10px; text-align: center;">
-      <h2>🎉 Félicitations !</h2>
-      <p>T'es forte mdrr c'est bebe bravo ! continue comme ça !</p>
-      <button onclick="closePopup()" style="padding: 10px 20px; font-size: 16px; border: none; background: #ff7096; color: white; border-radius: 5px; cursor: pointer;">Continuer</button>
-    </div>
-  `;
-  document.body.appendChild(popup);
+  // Ne pas afficher le popup si nous sommes à la dernière étape avec le code BRAVO
+  if (input !== "BRAVO") {
+    const popup = document.createElement('div');
+    popup.className = 'popup-congrats fade-in';
+    popup.style.position = 'fixed';
+    popup.style.top = '0';
+    popup.style.left = '0';
+    popup.style.width = '100%';
+    popup.style.height = '100%';
+    popup.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
+    popup.style.display = 'flex';
+    popup.style.justifyContent = 'center';
+    popup.style.alignItems = 'center';
+    popup.style.zIndex = '1000';
+
+    popup.innerHTML = `
+      <div class="popup-content" style="background: white; padding: 20px; border-radius: 10px; text-align: center;">
+        <h2>🎉 Félicitations !</h2>
+        <p>T'es forte mdrr c'est bebe bravo ! continue comme ça !</p>
+        <button onclick="closePopup()" style="padding: 10px 20px; font-size: 16px; border: none; background: #ff7096; color: white; border-radius: 5px; cursor: pointer;">Continuer</button>
+      </div>
+    `;
+    document.body.appendChild(popup);
+  }
 }
 
 function closePopup() {
