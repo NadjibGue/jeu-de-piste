@@ -14,6 +14,12 @@ body {
   overflow: hidden;
   background: black;
   transition: opacity 0.5s ease-out;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  box-sizing: border-box;
 }
 
 #introVideo {
@@ -33,15 +39,20 @@ body {
   padding: 30px;
   border-radius: 20px;
   max-width: 80%;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
 }
 
 .intro-content h1 {
   font-size: 2.5rem;
   margin-bottom: 15px;
+  margin-bottom: 20px;
 }
 
 .intro-content p {
   font-size: 1.2rem;
+  margin-bottom: 15px;
 }
 
 .intro-content button {
@@ -911,5 +922,11 @@ button:hover {
 @media screen and (max-height: 500px) {
   .progress-map {
     display: none;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .intro-content {
+    padding: 0 15px;
   }
 }
