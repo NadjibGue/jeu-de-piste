@@ -601,7 +601,71 @@ button:hover {
   }
 }
 
+.final-text {
+  opacity: 0;
+  animation-fill-mode: forwards;
+  text-align: center;
+  font-size: 1.4em;
+  margin: 15px 0;
+  color: #ff4d7e;
+}
 
+@keyframes fadeInDelayed {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes glowText {
+  0% {
+    opacity: 0;
+    text-shadow: none;
+  }
+
+  100% {
+    opacity: 1;
+    text-shadow: 0 0 10px #ff8ac9, 0 0 20px #ffaacc;
+  }
+}
+
+@keyframes pulseText {
+  0% {
+    transform: scale(1);
+    opacity: 0;
+  }
+
+  50% {
+    transform: scale(1.05);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.fade-in-slow {
+  animation: fadeInDelayed 2s ease-out forwards;
+}
+
+.fade-in-delayed {
+  animation: fadeInDelayed 1.5s ease-out forwards;
+}
+
+.glow-text {
+  animation: glowText 2s ease-out forwards;
+}
+
+.pulse-text {
+  animation: pulseText 1.5s ease-out forwards;
+}
 
 .map-step.current {
   background: #ff4081;

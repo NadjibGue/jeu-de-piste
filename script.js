@@ -197,7 +197,7 @@ function createDialogueContainer() {
     return container;
 }
 
-function handleDialogueResponse() {
+function handleDialogueResponse() { 
   const input = document.querySelector('.dialogue-input');
   const response = input ? input.value.trim() : '';
 
@@ -211,10 +211,10 @@ function handleDialogueResponse() {
 
   // Sauvegarder la réponse dans l'objet global + localStorage
   userResponses.answers.push({
-      question: dialogue.question,
-      response: response,
-      reaction: reaction,
-      timestamp: new Date().toISOString()
+    question: dialogue.question,
+    response: response,
+    reaction: reaction,
+    timestamp: new Date().toISOString()
   });
   localStorage.setItem('gameResponses', JSON.stringify(userResponses));
 
@@ -224,20 +224,21 @@ function handleDialogueResponse() {
   formData.append('timestamp', new Date().toISOString());
   formData.append('question', dialogue.question);
   formData.append('response', response);
+  formData.append('secret', 'ishtar-code-secret'); // ← tu peux aussi le vérifier côté Apps Script si besoin
 
-  fetch("https://script.google.com/macros/s/AKfycbxLoxInxXJGcRR5fXRyz3L_RMHxqBzSEGdBtwQqrNbNI1dT1B2Ud5g6ciILdRsob6W2/exec", {
-      method: "POST",
-      mode: 'no-cors',
-      body: formData
+  fetch("https://script.google.com/macros/s/AKfycbxfGx_DgeP58Hygoa2dIupesHhIQPXIwB3FMR2855vS958Lbngd8suCvMuAhANcBXnCnA/exec", {
+    method: "POST",
+    mode: 'no-cors',
+    body: formData
   }).catch(error => console.log('Erreur envoi dialogue:', error));
 
-  // Afficher la réaction (s’il y en a)
+  // Afficher la réaction
   if (reaction) {
-      container.innerHTML += `
-          <div class="dialogue-reaction fade-in">
-              ${reaction}
-          </div>
-      `;
+    container.innerHTML += `
+      <div class="dialogue-reaction fade-in">
+        ${reaction}
+      </div>
+    `;
   }
 
   const nextBtn = document.createElement('button');
@@ -248,15 +249,16 @@ function handleDialogueResponse() {
     if (currentDialogue >= dialogues.length) {
       showDialogueSummary();
     } else {
-      showDialogue(); // Pas startGame() ici, car on reste dans les dialogues
+      showDialogue(); // On reste dans les dialogues
     }
   };
   container.appendChild(nextBtn);
+
   if (currentDialogue >= dialogues.length) {
-  localStorage.setItem("dialoguesShown", "true");
+    localStorage.setItem("dialoguesShown", "true");
+  }
 }
 
-}
 
 
 function showDialogueSummary() {
@@ -373,7 +375,7 @@ function checkCode() {
     formData.append('code', input);
     formData.append('secret', 'ishtar-code-secret');
 
-    fetch("https://script.google.com/macros/s/AKfycbwGtB0aq7myxN8f0LaBwpWJCV2Ti80XJUWMXyqwupP9vVJ7gIrBpltsKhmwj67iFLNcDA/exec", {
+    fetch("https://script.google.com/macros/s/AKfycbxfGx_DgeP58Hygoa2dIupesHhIQPXIwB3FMR2855vS958Lbngd8suCvMuAhANcBXnCnA/exec", {
       method: "POST",
       mode: 'no-cors',
       body: formData
@@ -458,12 +460,12 @@ function showHint(hint) {
 
 function triggerFinalMoment() {
   const container = document.getElementById("step-container");
-  
-  // Assurer que le conteneur est propre
+
+  // Nettoyer le conteneur
   container.innerHTML = '';
   container.className = 'final-container';
-  
-  // Créer une séquence plus fluide
+
+  // Séquence finale avec animations
   const sequence = [
     {
       text: "Ferme les yeux...",
@@ -492,19 +494,23 @@ function triggerFinalMoment() {
       const div = document.createElement('div');
       div.className = `final-text ${step.class}`;
       div.textContent = step.text;
+      div.style.animationFillMode = 'forwards';
       container.appendChild(div);
     }, step.delay);
   });
 
-  // Ajouter le bouton final après la séquence
+  // Bouton final "Je suis prête"
   setTimeout(() => {
     const finalButton = document.createElement('button');
     finalButton.className = 'final-button appear-smooth';
     finalButton.textContent = 'Je suis prête';
     finalButton.onclick = revealFinal;
+    finalButton.style.animationFillMode = 'forwards';
     container.appendChild(finalButton);
-  }, 12000);
+  }, 12500); // petit délai après la dernière phrase
 }
+
+
 
 function revealFinal() {
   // Transition douce vers le noir
