@@ -1,13 +1,15 @@
+const BASE_URL = location.pathname.replace(/\/[^\/]*$/, ''); // => "/jeu-de-piste"
 const CACHE_NAME = 'jeu-de-piste-v1';
 const ASSETS = [
-  '/',
-  '/index.html',
-  '/style.css',
-  '/script.js',
-  '/icon-192.png',
-  '/icon-512.png',
-  '/manifest.json'
+  `${BASE_URL}/`,
+  `${BASE_URL}/index.html`,
+  `${BASE_URL}/style.css`,
+  `${BASE_URL}/script.js`,
+  `${BASE_URL}/icon-192.png`,
+  `${BASE_URL}/icon-512.png`,
+  `${BASE_URL}/manifest.json`
 ];
+
 
 self.addEventListener('install', event => {
   event.waitUntil(
