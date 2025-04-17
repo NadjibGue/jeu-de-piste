@@ -3,7 +3,7 @@ const steps = [
     text: `<h3>Étape 1 : La magie Rose</h3>
            <p class="timing">À réaliser vendredi - Tu doit etre sur place a 12h00</p>
            <div class="enigme">
-             <p><strong>Énigme :</strong> Un endroit très girly, souvent croisé mais jamais exploré… le rose te guidera 💅</p>
+             <p><strong>Énigme :</strong> Un endroit très girly, souvent croisé mais jamais exploré… le rose te guidera </p>
              <p><strong>Action :</strong> Une fois là-bas, dis ton mot déclencheur : « Bonjour, j'aime la vanille ». Et laisse la magie opérer... À la fin, tu recevras un code qui te fais passer a l'etape suivant.</p>
            </div>`,
     hint: "Un lieu : tout est rose, girly, on passe souvent devant. Loin de moi, près de toi.",
@@ -260,34 +260,34 @@ function handleDialogueResponse() {
 
 
 function showDialogueSummary() {
-    const container = document.getElementById("dialogue-container");
-    let summaryHTML = `
-        <div class="summary-box fade-in">
-            <h3>💝 Merci pour tes réponses mon amour!</h3>
-            <p>J'ai bien reçu tes messages sur mon téléphone à l'instant. 
-               Fais une capture d'écran de ce récapitulatif, tu en auras peut-être besoin plus tard... 📸</p>
-            <div class="responses-list">
-    `;
-    
-    userResponses.answers.forEach((item, index) => {
-        summaryHTML += `
-            <div class="response-item">
-            
-                <p class="question">Q${index + 1}: ${item.question}</p>
-                <p class="answer">Ta réponse: ${item.response}</p>
-                <p class="reaction">💬 Réaction : ${item.reaction}</p>
-            </div>
-        `;
-    });
+  const container = document.getElementById("dialogue-container");
+  let summaryHTML = `
+      <div class="summary-box fade-in">
+          <h3>💝 Merci pour tes réponses mon amour !</h3>
+          <p>Chaque mot, chaque nuance… je les garde précieusement avec moi.  
+             Ce que tu viens de partager compte beaucoup. 🥰</p>
+          <div class="responses-list">
+  `;
+  
+  userResponses.answers.forEach((item, index) => {
+      summaryHTML += `
+          <div class="response-item">
+              <p class="question">Q${index + 1} : ${item.question}</p>
+              <p class="answer">📝 Ta réponse : <em>${item.response}</em></p>
+              <p class="reaction">💬 Réaction : ${item.reaction}</p>
+          </div>
+      `;
+  });
 
-    summaryHTML += `
-            </div>
-            <p class="next-step-hint">🎯 Maintenant, lance-toi dans l'étape 1! Je ne peux plus te contacter, mais je sais que tu vas y arriver! 💪</p>
-            <button onclick="startGameAfterSummary()" class="start-adventure-btn">Commencer l'aventure</button>
-        </div>
-    `;
+  summaryHTML += `
+          </div>
+          <p class="next-step-hint">🎯 Maintenant, il est temps de te lancer dans la toute première étape…  
+          Je ne peux plus intervenir, mais je suis avec toi à chaque pas. Tu vas tout déchirer 💪💖</p>
+          <button onclick="startGameAfterSummary()" class="start-adventure-btn">Commencer l’aventure</button>
+      </div>
+  `;
 
-    container.innerHTML = summaryHTML;
+  container.innerHTML = summaryHTML;
 }
 
 function startGameAfterSummary() {
@@ -313,13 +313,35 @@ function askNotificationPermission() {
       if (permission === "granted") {
         notificationsEnabled = true;
 
-        // ➤ Notification de départ
-        new Notification("🥰 Ahaa bébé...", {
-          body: "Là y’a plus de marche arrière 😈\nMais je sais que tu vas réussir.\nJe crois en toi mon cœur ❤️",
+        // Notification de départ
+        new Notification("🎮 Le jeu à Commencé!", {
+          body: "L'aventure commence, suis ton coeur... 💖\nJe ne serai pas là pour te guider je croi en toi",
           icon: "icon-192.png"
         });
 
-        // ➤ Voix robotisée
+        // Notifications pour chaque étape complétée
+        const stepNotifications = [
+          "🌸 Bravo pour l'étape 1! La suite t'attend...",
+          "☕ Le café n'était que le début...",
+          "💝 Récompense : Tu peux demandé de l'aide a une personnes de ton choix pzrmi que tu as contacter au debut de l'aventure",
+          "🏠 À mi-chemin... tu gere haha",
+          "💫 HIHI tu me regale ",
+          "🚗 Presque arrivée...",
+          "🎯 La dernière ligne droite!",
+          "❤️ Tu y es presque..."
+        ];
+
+        // Ajouter au checkCode pour envoyer la notification à chaque étape réussie
+        window.sendStepNotification = (stepIndex) => {
+          if (notificationsEnabled && stepIndex < stepNotifications.length) {
+            new Notification("✨ Étape " + (stepIndex + 1) + " réussie!", {
+              body: stepNotifications[stepIndex],
+              icon: "icon-192.png"
+            });
+          }
+        }
+
+        // Voix robotisée de départ
         const speech = new SpeechSynthesisUtterance(
           "Ahaa bébé... Là y’a plus de marche arrière. Mais je sais que tu vas réussir. Je crois en toi mon cœur."
         );
@@ -356,6 +378,10 @@ function checkCode() {
       mode: 'no-cors',
       body: formData
     }).catch(error => console.log('Erreur envoi code:', error));
+
+    if (notificationsEnabled) {
+      window.sendStepNotification(currentStep);
+    }
 
     currentStep++;
     updateProgressMap(); // Mettre à jour la carte
@@ -676,14 +702,14 @@ function viewResponses() {
 
 const stepIcons = ['💅', '☕', '💋', '🏠', '💝', '🚗', '🏨', '❤️'];
 const stepNames = [
-    'Etape 1 : Pesahtek les ongles',
-    'Pause Café : HAHA ouvre pas le sac',
-    'Frisson Secret : Le paaaarkiiing BEBEEE',
+    'Etape 1 : Pas loi de chez toi',
+    'Envoie une photo : Pesahtek les ongles ',
+    'Force pour la suite : Pesahtek le café',
     'Nid Douillet',
-    'Mots Doux Béééé 4',
-    'En Route',
+    'Ni 3 ni 5',
+    'T\'es belle et tu le sais',
     'Destination',
-    'Face à Face'
+    'FINALE'
   ]
 ;
 // Mettre à jour la carte de progression
@@ -762,7 +788,7 @@ function completeStep() {
     popup.innerHTML = `
       <div class="popup-content" style="background: white; padding: 20px; border-radius: 10px; text-align: center;">
         <h2>🎉 Félicitations !</h2>
-        <p>T'es forte mdrr c'est bebe bravo ! continue comme ça !</p>
+        <p>T'est forte bien vu ! rappel tout le long de ton aventure les notifs + progression en haut sur la gauche' !</p>
         <button onclick="closePopup()" style="padding: 10px 20px; font-size: 16px; border: none; background: #ff7096; color: white; border-radius: 5px; cursor: pointer;">Continuer</button>
       </div>
     `;
