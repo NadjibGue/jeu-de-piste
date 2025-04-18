@@ -325,10 +325,10 @@ function askNotificationPermission() {
         const stepNotifications = [
           "🌸 Bravo pour l'étape 1! La suite t'attend...",
           "☕ Le café n'était que le début...",
-          "💝 Récompense : Tu peux demandé de l'aide a une personnes de ton choix pzrmi que tu as contacter au debut de l'aventure",
-          "🏠 À mi-chemin... tu gere haha",
+          "💝 Récompense : Fais ton sac tu ne dors pas ici ce soir ",
+          "🏠 J'aime comment tu joue le jeu ",
           "💫 HIHI tu me regale ",
-          "🚗 Presque arrivée...",
+          "🚗 Récompense de 15h30 JOCKER Appel MARIN il a un truc a te dire",
           "🎯 La dernière ligne droite!",
           "❤️ Tu y es presque..."
         ];
